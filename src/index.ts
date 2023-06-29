@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 import chalk from "chalk";
-import clear from "clear";
 import figlet from "figlet";
 import gitly from "gitly";
 import inquirer from "inquirer";
@@ -11,7 +10,6 @@ import ora from "ora";
 const gitHubRepo = "kevinschmidt777/panda-api";
 
 // Introduction
-clear();
 console.log(
   chalk.green(figlet.textSync("Panda API", { horizontalLayout: "full" }))
 );
