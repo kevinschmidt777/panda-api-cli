@@ -3,11 +3,9 @@
 import chalk from "chalk";
 import clear from "clear";
 import figlet from "figlet";
+import gitly from "gitly";
 import inquirer from "inquirer";
-import fs from "fs";
-import https from "https";
-// @ts-ignore
-import download from "download-git-repo";
+import ora from "ora";
 
 // Constants
 const gitHubRepo = "kevinschmidt777/stay-focused";
@@ -24,6 +22,7 @@ console.log(
   )
 );
 
+// Setup process
 const setup = async () => {
   const answers = await inquirer.prompt([
     {
@@ -47,10 +46,41 @@ const setup = async () => {
 
   console.log(answers);
 
-  download(gitHubRepo, "./test", function (err: any) {
-    console.log(err ? "Error" : "Success");
+  // Download current github repo master branch of Panda API.
+  const downloadSpinner = ora({
+    text: "Downloading Panda API...",
+    color: "blue",
   });
+  try {
+    downloadSpinner.start();
+    await gitly(gitHubRepo, `./${answers.name}`, {});
+  } catch (error) {
+    console.log(chalk.red(error));
+  } finally {
+    downloadSpinner.stop();
+  }
+
+  // Initialize the project
+  const initSpinner = ora({
+    text: "Initializing project...",
+    color: "blue",
+  });
+  try {
+    initSpinner.start();
+    // TODO: Replace project name in package.json and all that stuff needed...
+  } catch (error) {
+    console.log(chalk.red(error));
+  } finally {
+    initSpinner.stop();
+  }
+
+  // Done!
+  console.log(
+    chalk.green(
+      `Yay, we're done! Your new project inside of the folder "./${answers.name}" is ready. Happy coding!`
+    )
+  );
 };
 
-// Start process
+// Start the process
 setup();
