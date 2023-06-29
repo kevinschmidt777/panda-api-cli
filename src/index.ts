@@ -8,7 +8,7 @@ import inquirer from "inquirer";
 import ora from "ora";
 
 // Constants
-const gitHubRepo = "kevinschmidt777/stay-focused";
+const gitHubRepo = "kevinschmidt777/panda-api";
 
 // Introduction
 clear();
