@@ -16,8 +16,11 @@ const pandaApiOpenerText = `${chalk.green(
 const program = new Command();
 program
   .description(pandaApiOpenerText)
-  .option("-setup", "setup a new project")
-  .option("-controller <value>", "create a new controller")
+  .option("-setup", "setup a new project from scratch")
+  .option(
+    "-controller <value>",
+    "create a new controller (including routes and schema) for an existing project"
+  )
   .parse(process.argv);
 const options = program.opts();
 
