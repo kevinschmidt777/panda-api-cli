@@ -25,6 +25,7 @@
   "author": "Kevin Schmidt",
   "license": "ISC",
   "dependencies": {
+    "@npmcli/package-json": "^3.1.1",
     "chalk": "^4.1.2",
     "commander": "^11.0.0",
     "figlet": "^1.6.0",
@@ -37,6 +38,7 @@
     "@types/figlet": "^1.5.6",
     "@types/inquirer": "^9.0.3",
     "@types/node": "^20.3.2",
+    "@types/npmcli__package-json": "^2.0.0",
     "@types/tar": "^6.1.5",
     "nodemon": "^2.0.22",
     "ts-node": "^10.9.1",

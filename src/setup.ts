@@ -2,6 +2,7 @@ import chalk from "chalk";
 import gitly from "gitly";
 import inquirer from "inquirer";
 import ora from "ora";
+import packageJson from "@npmcli/package-json";
 
 export const setup = async (pandaApiOpenerText: string, gitHubRepo: string) => {
   // Introduction
@@ -18,48 +19,35 @@ export const setup = async (pandaApiOpenerText: string, gitHubRepo: string) => {
       message: "What is the name of your project?",
       default: "my-fancy-panda-api",
     },
-    {
-      type: "list",
-      name: "database",
-      message: "What database do you want to use?",
-      choices: ["MongoDB", "PostgreSQL", "MySQL", "SQLite", "MariaDB"],
-    },
-    {
+    /*{
       type: "checkbox",
       name: "features",
       message: "What features do you want to include?",
       choices: ["Authentication"],
-    },
+    },*/
   ]);
 
-  console.log(answers);
-
-  // Download current github repo master branch of Panda API.
-  const downloadSpinner = ora({
-    text: "Downloading Panda API...",
+  const spinner = ora({
+    text: "Downloading current Panda API and getting things ready...",
     color: "blue",
   });
   try {
-    downloadSpinner.start();
+    spinner.start();
+    // Download repo.
     await gitly(gitHubRepo, `./${answers.name}`, {});
+    // Update package.json
+    const pgkJson = await packageJson.load(`./${answers.name}`);
+    pgkJson.update({
+      name: answers.name,
+      author: "",
+      description: "a API built with Panda API Framework",
+      keywords: ["panda-api"],
+    });
+    await pgkJson.save();
   } catch (error) {
     console.log(chalk.red(error));
   } finally {
-    downloadSpinner.stop();
-  }
-
-  // Initialize the project
-  const initSpinner = ora({
-    text: "Initializing project...",
-    color: "blue",
-  });
-  try {
-    initSpinner.start();
-    // TODO: Replace project name in package.json and all that stuff needed...
-  } catch (error) {
-    console.log(chalk.red(error));
-  } finally {
-    initSpinner.stop();
+    spinner.stop();
   }
 
   // Done!

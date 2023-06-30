@@ -48,6 +48,12 @@ export const controller = async (
       updateControllerIndex,
       `export * from "./${controllerName}";\n`
     );
+
+    // Regsiter routes at server index.
+    fs.appendFileSync(
+      "./index.ts",
+      `server.register(routes.${controllerName}Routes);\n`
+    );
   } catch (error) {
     console.log(chalk.red(error));
   } finally {
