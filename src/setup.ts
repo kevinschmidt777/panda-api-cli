@@ -3,6 +3,7 @@ import gitly from "gitly";
 import inquirer from "inquirer";
 import ora from "ora";
 import packageJson from "@npmcli/package-json";
+import { rmSync } from "fs";
 
 export const setup = async (pandaApiOpenerText: string, gitHubRepo: string) => {
   // Introduction
@@ -39,11 +40,14 @@ export const setup = async (pandaApiOpenerText: string, gitHubRepo: string) => {
     const pgkJson = await packageJson.load(`./${answers.name}`);
     pgkJson.update({
       name: answers.name,
+      version: "0.1.0",
       author: "",
       description: "a API built with Panda API Framework",
       keywords: ["panda-api"],
     });
     await pgkJson.save();
+    // Remove .git folder
+    rmSync("./.git", { recursive: true, force: true });
   } catch (error) {
     console.log(chalk.red(error));
   } finally {
